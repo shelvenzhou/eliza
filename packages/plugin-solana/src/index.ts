@@ -21,14 +21,10 @@ export const solanaPlugin: Plugin = {
     name: "solana",
     description: "Solana Plugin for Eliza",
     actions: [
-        executeSwap,
-        pumpfun,
         transferToken,
-        executeSwapForDAO,
-        take_order,
     ],
-    evaluators: [trustEvaluator],
-    providers: [walletProvider, trustScoreProvider],
+    evaluators: [],
+    providers: [walletProvider],
 };
 
 export default solanaPlugin;

@@ -365,7 +365,8 @@ export function createAgent(
             nodePlugin,
             getSecret(character, "SOLANA_PUBLIC_KEY") ||
             (getSecret(character, "WALLET_PUBLIC_KEY") &&
-                !getSecret(character, "WALLET_PUBLIC_KEY")?.startsWith("0x"))
+                !getSecret(character, "WALLET_PUBLIC_KEY")?.startsWith("0x")) ||
+            getSecret(character, "WALLET_SECRET_SALT")
                 ? solanaPlugin
                 : null,
             getSecret(character, "EVM_PRIVATE_KEY") ||

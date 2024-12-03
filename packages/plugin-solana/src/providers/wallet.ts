@@ -1,8 +1,8 @@
 import { IAgentRuntime, Memory, Provider, State } from "@ai16z/eliza";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import NodeCache from "node-cache";
-
+import { DeriveKeyProvider } from "@ai16z/plugin-tee/src/providers/deriveKeyProvider";
 // Provider configuration
 const PROVIDER_CONFIG = {
     BIRDEYE_API: "https://public-api.birdeye.so",
@@ -368,29 +368,39 @@ const walletProvider: Provider = {
         runtime: IAgentRuntime,
         _message: Memory,
         _state?: State
-    ): Promise<string | null> => {
+    ): Promise<string> => {
         try {
-            const publicKey = runtime.getSetting("SOLANA_PUBLIC_KEY");
-            if (!publicKey) {
+            // Validate wallet configuration
+            if (!runtime.getSetting("WALLET_SECRET_SALT")) {
                 console.error(
-                    "SOLANA_PUBLIC_KEY not configured, skipping wallet injection"
+                    "Wallet secret salt is not configured in settings"
                 );
                 return "";
             }
 
-            const connection = new Connection(
-                runtime.getSetting("RPC_URL") || PROVIDER_CONFIG.DEFAULT_RPC
-            );
+            let publicKey: PublicKey;
+            try {
+                const deriveKeyProvider = new DeriveKeyProvider();
+                const derivedKeyPair: Keypair =
+                    await deriveKeyProvider.deriveEd25519Keypair(
+                        "/",
+                        runtime.getSetting("WALLET_SECRET_SALT")
+                    );
+                publicKey = derivedKeyPair.publicKey;
+                console.log("Wallet Public Key: ", publicKey.toBase58());
+            } catch (error) {
+                console.error("Error creating PublicKey:", error);
+                return "";
+            }
 
-            const provider = new WalletProvider(
-                connection,
-                new PublicKey(publicKey)
-            );
+            const connection = new Connection(PROVIDER_CONFIG.DEFAULT_RPC);
+            const provider = new WalletProvider(connection, publicKey);
 
-            return await provider.getFormattedPortfolio(runtime);
+            const porfolio = await provider.getFormattedPortfolio(runtime);
+            return porfolio;
         } catch (error) {
-            console.error("Error in wallet provider:", error);
-            return null;
+            console.error("Error in wallet provider:", error.message);
+            return `Failed to fetch wallet information: ${error instanceof Error ? error.message : "Unknown error"}`;
         }
     },
 };

@@ -25,6 +25,7 @@ import {
 } from "@ai16z/eliza";
 import { composeContext } from "@ai16z/eliza";
 import { generateObject } from "@ai16z/eliza";
+import { DeriveKeyProvider } from "@ai16z/plugin-tee/src/providers/deriveKeyProvider";
 
 export interface TransferContent extends Content {
     tokenAddress: string;
@@ -77,23 +78,22 @@ export default {
     validate: async (runtime: IAgentRuntime, message: Memory) => {
         console.log("Validating transfer from user:", message.userId);
         //add custom validate logic here
-        /*
-            const adminIds = runtime.getSetting("ADMIN_USER_IDS")?.split(",") || [];
-            //console.log("Admin IDs from settings:", adminIds);
+        const adminIds = runtime.getSetting("ADMIN_USER_IDS")?.split(",") || [];
+        console.log("Admin IDs from settings:", adminIds);
 
-            const isAdmin = adminIds.includes(message.userId);
+        const isAdmin = adminIds.includes(message.userId);
 
-            if (isAdmin) {
-                //console.log(`Authorized transfer from user: ${message.userId}`);
-                return true;
-            }
-            else
-            {
-                //console.log(`Unauthorized transfer attempt from user: ${message.userId}`);
-                return false;
-            }
-            */
-        return false;
+        if (isAdmin) {
+            //console.log(`Authorized transfer from user: ${message.userId}`);
+            return true;
+        }
+        else
+        {
+            //console.log(`Unauthorized transfer attempt from user: ${message.userId}`);
+            return false;
+        }
+
+        // return false;
     },
     description: "Transfer tokens from the agent's wallet to another address",
     handler: async (
@@ -138,11 +138,22 @@ export default {
         }
 
         try {
-            const privateKeyString =
-                runtime.getSetting("SOLANA_PRIVATE_KEY") ??
-                runtime.getSetting("WALLET_PRIVATE_KEY");
-            const secretKey = bs58.decode(privateKeyString);
-            const senderKeypair = Keypair.fromSecretKey(secretKey);
+            let senderKeypair: Keypair;
+            // TEE Mode if WALLET_SECRET_SALT is set
+            if (settings.WALLET_SECRET_SALT) {
+                const deriveKeyProvider = new DeriveKeyProvider();
+                senderKeypair = await deriveKeyProvider.deriveEd25519Keypair(
+                    "/",
+                    settings.WALLET_SECRET_SALT
+                );
+            } else {
+                const privateKeyString =
+                    runtime.getSetting("SOLANA_PRIVATE_KEY") ??
+                    runtime.getSetting("WALLET_PRIVATE_KEY");
+                const secretKey = bs58.decode(privateKeyString);
+                senderKeypair = Keypair.fromSecretKey(secretKey);
+            }
+
 
             const connection = new Connection(settings.RPC_URL!);
 
