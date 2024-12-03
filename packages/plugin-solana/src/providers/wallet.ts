@@ -2,7 +2,7 @@ import { IAgentRuntime, Memory, Provider, State } from "@ai16z/eliza";
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import NodeCache from "node-cache";
-import { DeriveKeyProvider } from "@ai16z/plugin-tee/src/providers/deriveKeyProvider";
+import { DeriveKeyProvider } from "@ai16z/plugin-tee";
 // Provider configuration
 const PROVIDER_CONFIG = {
     BIRDEYE_API: "https://public-api.birdeye.so",

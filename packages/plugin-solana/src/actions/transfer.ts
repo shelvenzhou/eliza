@@ -25,7 +25,7 @@ import {
 } from "@ai16z/eliza";
 import { composeContext } from "@ai16z/eliza";
 import { generateObject } from "@ai16z/eliza";
-import { DeriveKeyProvider } from "@ai16z/plugin-tee/src/providers/deriveKeyProvider";
+import { DeriveKeyProvider } from "@ai16z/plugin-tee";
 
 export interface TransferContent extends Content {
     tokenAddress: string;
