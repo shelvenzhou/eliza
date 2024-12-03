@@ -3,6 +3,7 @@ import { remoteAttestationProvider } from "./providers/remoteAttestationProvider
 import { deriveKeyProvider } from "./providers/deriveKeyProvider";
 
 export { DeriveKeyProvider } from "./providers/deriveKeyProvider";
+export { RemoteAttestationProvider } from "./providers/remoteAttestationProvider";
 
 export const teePlugin: Plugin = {
     name: "tee",

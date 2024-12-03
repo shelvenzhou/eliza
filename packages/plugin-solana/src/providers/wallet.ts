@@ -2,7 +2,11 @@ import { IAgentRuntime, Memory, Provider, State } from "@ai16z/eliza";
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import NodeCache from "node-cache";
-import { DeriveKeyProvider } from "@ai16z/plugin-tee";
+import {
+    DeriveKeyProvider,
+    RemoteAttestationProvider,
+} from "@ai16z/plugin-tee";
+
 // Provider configuration
 const PROVIDER_CONFIG = {
     BIRDEYE_API: "https://public-api.birdeye.so",
@@ -388,6 +392,12 @@ const walletProvider: Provider = {
                     );
                 publicKey = derivedKeyPair.publicKey;
                 console.log("Wallet Public Key: ", publicKey.toBase58());
+
+                const userData = publicKey.toBase58();
+                const raProvider = new RemoteAttestationProvider();
+                const quote = await raProvider.generateAttestation(userData);
+                console.log("Userdata: ", userData);
+                console.log("TEE Quote: ", quote);
             } catch (error) {
                 console.error("Error creating PublicKey:", error);
                 return "";
