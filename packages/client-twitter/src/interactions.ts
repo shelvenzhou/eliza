@@ -48,7 +48,7 @@ Thread of Tweets You Are Replying To:
 
 {{actions}}
 
-# Task: Generate a post in the voice, style and perspective of {{agentName}} (@{{twitterUserName}}). Include an action, if appropriate. {{actionNames}}:
+# Task: Generate a post in the voice, style and perspective of {{agentName}} (@{{twitterUserName}}). The total character count MUST be less than 280. Include an action, if appropriate. {{actionNames}}:
 {{currentPost}}
 ` + messageCompletionFooter;
 
