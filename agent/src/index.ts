@@ -68,6 +68,7 @@ import yargs from "yargs";
 import net from "net";
 
 import { TwitterKolProvider } from "./providers/twitterKol";
+import { defiLlamaProvider } from "./providers/defiLlama";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -621,7 +622,7 @@ export async function createAgent(
                 ? avalanchePlugin
                 : null,
         ].filter(Boolean),
-        providers: [twitterKolProvider],
+        providers: [twitterKolProvider, defiLlamaProvider],
         actions: [],
         services: [],
         managers: [],
