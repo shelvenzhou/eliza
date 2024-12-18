@@ -41,6 +41,7 @@ import { solanaPlugin } from "@ai16z/plugin-solana";
 import { aptosPlugin } from "@ai16z/plugin-aptos";
 import { teePlugin } from "@ai16z/plugin-tee";
 import { TwitterKolProvider } from "./providers/twitterKol";
+import { defiLlamaProvider } from "./providers/defiLlama";
 import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
@@ -415,7 +416,7 @@ export function createAgent(
             getSecret(character, "ALCHEMY_API_KEY") ? goatPlugin : null,
             getSecret(character, "APTOS_PRIVATE_KEY") ? aptosPlugin : null,
         ].filter(Boolean),
-        providers: [twitterKolProvider],
+        providers: [twitterKolProvider, defiLlamaProvider],
         actions: [],
         services: [],
         managers: [],
