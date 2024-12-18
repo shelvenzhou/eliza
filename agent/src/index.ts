@@ -11,7 +11,6 @@ import {
     AgentRuntime,
     CacheManager,
     Character,
-    Clients,
     DbCacheAdapter,
     defaultCharacter,
     elizaLogger,
@@ -67,6 +66,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import yargs from "yargs";
 import net from "net";
+
+import { TwitterKolProvider } from "./providers/twitterKol";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -512,6 +513,25 @@ export async function createAgent(
         );
     }
 
+    let twitterKolProvider = new TwitterKolProvider({
+        accounts: [
+            "phtevenstrong",
+            "thedefiedge",
+            "DeFi_Dad",
+            "DefiIgnas",
+            "DeFi_Cheetah",
+            "Hercules_Defi",
+            "tokenterminal",
+            "nansen_ai",
+            "lookonchain",
+            "aixbt_agent",
+            "_kaitoai",
+            "zachxbt",
+        ],
+        maxAgeDays: 7,
+        cacheTimeout: 15 * 60 * 1000,
+    });
+
     return new AgentRuntime({
         databaseAdapter: db,
         token,
@@ -601,7 +621,7 @@ export async function createAgent(
                 ? avalanchePlugin
                 : null,
         ].filter(Boolean),
-        providers: [],
+        providers: [twitterKolProvider],
         actions: [],
         services: [],
         managers: [],
