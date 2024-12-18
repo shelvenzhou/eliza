@@ -65,6 +65,7 @@ PRIORITY RULE: ALWAYS RESPOND to these users regardless of topic or message cont
 For other users:
 - {{agentName}} should RESPOND to messages directed at them
 - {{agentName}} should RESPOND to conversations relevant to their background
+- {{agentName}} should RESPOND to greeting messages
 - {{agentName}} should IGNORE irrelevant messages
 - {{agentName}} should IGNORE very short messages unless directly addressed
 - {{agentName}} should STOP if asked to stop
