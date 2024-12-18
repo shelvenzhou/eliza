@@ -10,7 +10,6 @@ import {
     AgentRuntime,
     CacheManager,
     Character,
-    Clients,
     DbCacheAdapter,
     FsCacheAdapter,
     IAgentRuntime,
@@ -27,7 +26,6 @@ import {
 import { zgPlugin } from "@ai16z/plugin-0g";
 import { goatPlugin } from "@ai16z/plugin-goat";
 import { bootstrapPlugin } from "@ai16z/plugin-bootstrap";
-// import { buttplugPlugin } from "@ai16z/plugin-buttplug";
 import {
     coinbaseCommercePlugin,
     coinbaseMassPaymentsPlugin,
@@ -40,8 +38,9 @@ import { imageGenerationPlugin } from "@ai16z/plugin-image-generation";
 import { evmPlugin } from "@ai16z/plugin-evm";
 import { createNodePlugin } from "@ai16z/plugin-node";
 import { solanaPlugin } from "@ai16z/plugin-solana";
-import { aptosPlugin, TransferAptosToken } from "@ai16z/plugin-aptos";
+import { aptosPlugin } from "@ai16z/plugin-aptos";
 import { teePlugin } from "@ai16z/plugin-tee";
+import { TwitterKolProvider } from "./providers/twitterKol";
 import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
@@ -366,6 +365,12 @@ export function createAgent(
 
     nodePlugin ??= createNodePlugin();
 
+    let twitterKolProvider = new TwitterKolProvider({
+        accounts: ["phtevenstrong", "thedefiedge", "DeFi_Dad", "DefiIgnas", "DeFi_Cheetah", "Hercules_Defi", "tokenterminal", "nansen_ai", "lookonchain", "aixbt_agent", "_kaitoai", "zachxbt"],
+        maxAgeDays: 7,
+        cacheTimeout: 15 * 60 * 1000
+    });
+
     return new AgentRuntime({
         databaseAdapter: db,
         token,
@@ -410,7 +415,7 @@ export function createAgent(
             getSecret(character, "ALCHEMY_API_KEY") ? goatPlugin : null,
             getSecret(character, "APTOS_PRIVATE_KEY") ? aptosPlugin : null,
         ].filter(Boolean),
-        providers: [],
+        providers: [twitterKolProvider],
         actions: [],
         services: [],
         managers: [],
