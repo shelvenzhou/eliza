@@ -367,9 +367,22 @@ export function createAgent(
     nodePlugin ??= createNodePlugin();
 
     let twitterKolProvider = new TwitterKolProvider({
-        accounts: ["phtevenstrong", "thedefiedge", "DeFi_Dad", "DefiIgnas", "DeFi_Cheetah", "Hercules_Defi", "tokenterminal", "nansen_ai", "lookonchain", "aixbt_agent", "_kaitoai", "zachxbt"],
+        accounts: [
+            "phtevenstrong",
+            "thedefiedge",
+            "DeFi_Dad",
+            "DefiIgnas",
+            "DeFi_Cheetah",
+            "Hercules_Defi",
+            "tokenterminal",
+            "nansen_ai",
+            "lookonchain",
+            "aixbt_agent",
+            "_kaitoai",
+            "zachxbt",
+        ],
         maxAgeDays: 7,
-        cacheTimeout: 15 * 60 * 1000
+        cacheTimeout: 15 * 60 * 1000,
     });
 
     return new AgentRuntime({
