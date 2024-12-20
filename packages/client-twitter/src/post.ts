@@ -16,8 +16,10 @@ import { IImageDescriptionService, ServiceType } from "@elizaos/core";
 import { buildConversationThread } from "./utils.ts";
 import { twitterMessageHandlerTemplate } from "./interactions.ts";
 import { DEFAULT_MAX_TWEET_LENGTH } from "./environment.ts";
+import { generateTokenWhitelist } from "./whitelist.ts";
 
-const twitterPostTemplate = `
+const twitterPostTemplate =
+    `
 # Areas of Expertise
 {{knowledge}}
 
@@ -36,6 +38,9 @@ const twitterPostTemplate = `
 Write a post that is {{adjective}} about {{topic}} (without mentioning {{topic}} directly), from the perspective of {{agentName}}. Do not add commentary or acknowledge this request, just write the post.
 Your response should be 1, 2, or 3 sentences (choose the length at random).
 Your response should only base on accurate information with sources when available and avoid the information that cannot be verified.
+Your response should only talk about tokens in the whitelist: ` +
+    generateTokenWhitelist() +
+    `
 Your response should not contain any questions. Brief, concise statements only. The total character count MUST be less than {{maxTweetLength}}. No emojis. Use \\n\\n (double spaces) between statements if there are multiple statements in your response.`;
 
 export const twitterActionTemplate =
