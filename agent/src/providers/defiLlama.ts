@@ -149,7 +149,7 @@ const defiLlamaProvider: Provider = {
         }
 
         return `
-DeFi Yield Data from DefiLlama (Last updated: ${lastUpdate.toLocaleString()})
+DeFi Yield Data from Data Platform (Last updated: ${lastUpdate.toLocaleString()})
 Top pools by TVL:
 ${formatPoolData(pools)}
 
