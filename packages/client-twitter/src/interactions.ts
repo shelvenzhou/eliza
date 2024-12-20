@@ -17,6 +17,7 @@ import {
 } from "@ai16z/eliza";
 import { ClientBase } from "./base";
 import { buildConversationThread, sendTweet, wait } from "./utils.ts";
+import { generateTokenWhitelist } from "./whitelist.ts";
 
 export const twitterMessageHandlerTemplate =
     `
@@ -50,7 +51,22 @@ Thread of Tweets You Are Replying To:
 
 # Task: Generate a post in the voice, style and perspective of {{agentName}} (@{{twitterUserName}}). The total character count MUST be less than 280. Include an action, if appropriate. {{actionNames}}:
 {{currentPost}}
-` + messageCompletionFooter;
+
+Think through the following steps, but only output the final result:
+
+1. Do not add commentary or acknowledge this request, just write the post. The total character count MUST be less than 280.
+
+2. Check the tokens you are talking about, and ensure they are in the token whitelist. Replace the contents not related with the ones in the list.
+` +
+    generateTokenWhitelist() +
+    `
+3. Check the facts, numbers and links you are talking about. Provide accurate information with sources when available and remove the information that cannot be verified based on the providers.
+Kindly admit you don't know about it if there is no related information in the providers.
+
+4. Do format check: The total character count MUST be less than 280.
+
+` +
+    messageCompletionFooter;
 
 export const twitterShouldRespondTemplate =
     `# INSTRUCTIONS: Determine if {{agentName}} (@{{twitterUserName}}) should respond to the message and participate in the conversation. Do not comment. Just respond with "true" or "false".

@@ -10,8 +10,10 @@ import {
 } from "@ai16z/eliza";
 import { elizaLogger } from "@ai16z/eliza";
 import { ClientBase } from "./base.ts";
+import { generateTokenWhitelist } from "./whitelist.ts";
 
-const twitterPostTemplate = `
+const twitterPostTemplate =
+    `
 # Areas of Expertise
 {{knowledge}}
 
@@ -27,9 +29,18 @@ const twitterPostTemplate = `
 {{postDirections}}
 
 # Task: Generate a post in the voice and style and perspective of {{agentName}} @{{twitterUserName}}.
-Write a 1-3 sentence post that is {{adjective}} about {{topic}} (without mentioning {{topic}} directly), from the perspective of {{agentName}}. Do not add commentary or acknowledge this request, just write the post.
-Provide accurate information with sources when available and avoid the information that cannot be verified.
-Your response should not contain any questions. Brief, concise statements only. The total character count MUST be less than 280. No emojis. Use \\n\\n (double spaces) between statements.`;
+Think through the following steps, but only output the final result:
+
+1. Write a 1-3 sentence post that is {{adjective}} about {{topic}} (without mentioning {{topic}} directly), from the perspective of {{agentName}}. Do not add commentary or acknowledge this request, just write the post.
+
+2. Check the tokens you are talking about, and ensure they are in the token whitelist. Replace the contents not related with the ones in the list.
+` +
+    generateTokenWhitelist() +
+    `
+3. Check the facts, numbers and links you are talking about. Provide accurate information with sources when available and remove the information that cannot be verified based on the providers.
+
+4. Do format check: Your response should not contain any questions. Brief, concise statements only. The total character count MUST be less than 280. No emojis. Use \\n\\n (double spaces) between statements.
+`;
 
 const MAX_TWEET_LENGTH = 280;
 
