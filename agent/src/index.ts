@@ -24,6 +24,7 @@ import {
     validateCharacterConfig,
     CacheStore,
     Client,
+    Clients,
     ICacheManager,
 } from "@elizaos/core";
 import { RedisClient } from "@elizaos/adapter-redis";

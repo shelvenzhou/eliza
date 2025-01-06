@@ -4,7 +4,7 @@ import {
     Memory,
     State,
     elizaLogger,
-} from "@ai16z/eliza";
+} from "@elizaos/core";
 import { Scraper, Tweet } from "agent-twitter-client";
 
 interface TwitterKolConfig {
