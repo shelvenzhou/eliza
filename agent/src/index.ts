@@ -70,6 +70,7 @@ import net from "net";
 
 import { TwitterKolProvider } from "./providers/twitterKol";
 import { defiLlamaProvider } from "./providers/defiLlama";
+import { kiraTradingProvider } from "./providers/kiraTrading";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -623,7 +624,7 @@ export async function createAgent(
                 ? avalanchePlugin
                 : null,
         ].filter(Boolean),
-        providers: [twitterKolProvider, defiLlamaProvider],
+        providers: [twitterKolProvider, defiLlamaProvider, kiraTradingProvider],
         actions: [],
         services: [],
         managers: [],
