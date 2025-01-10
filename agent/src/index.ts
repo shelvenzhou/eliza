@@ -68,6 +68,7 @@ import { fileURLToPath } from "url";
 import yargs from "yargs";
 import net from "net";
 
+import { bioProvider } from "./providers/bio";
 import { TwitterKolProvider } from "./providers/twitterKol";
 import { defiLlamaProvider } from "./providers/defiLlama";
 import { kiraTradingProvider } from "./providers/kiraTrading";
@@ -624,7 +625,7 @@ export async function createAgent(
                 ? avalanchePlugin
                 : null,
         ].filter(Boolean),
-        providers: [twitterKolProvider, defiLlamaProvider, kiraTradingProvider],
+        providers: [bioProvider, twitterKolProvider, defiLlamaProvider, kiraTradingProvider],
         actions: [],
         services: [],
         managers: [],
