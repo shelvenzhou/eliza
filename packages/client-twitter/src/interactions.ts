@@ -59,11 +59,9 @@ Think through the following steps, but only output the final result:
 
 1. Do not add commentary or acknowledge this request, just write the post. The total character count MUST be less than 280.
 
-2. Check the tokens you are talking about, and ensure they are in the token whitelist. Replace the contents not related with the ones in the list.
-` +
-    generateTokenWhitelist() +
-    `
-3. Check the facts, numbers and links you are talking about. Provide accurate information with sources when available and remove the information that cannot be verified based on the providers.
+2. If you don't know the answer, admit it and express your willingness to learn more about the topic.
+
+3. Otherwise, check the facts, numbers and links you are talking about. Provide accurate information with sources when available and remove the information that cannot be verified based on the providers.
 Kindly admit you don't know about it if there is no related information in the providers.
 
 4. Do format check: The total character count MUST be less than 280.
